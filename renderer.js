@@ -73,10 +73,10 @@ window.generateQr = () => {
     window.api.generateQr(); // Solicita a geração do QR Code
 };
 function getAdminGroups() {
-    window.api.send('get-admin-groups');
+    window.api.getAdminGroups(); // Usa a função exposta pelo preload.js
 }
 
-window.api.on('admin-groups-list', (event, { success, groups, error }) => {
+window.api.onAdminGroupsList((event, { success, groups, error }) => {
     const adminGroupsList = document.getElementById('admin-groups-list');
     adminGroupsList.innerHTML = ''; // Limpa a lista anterior
 

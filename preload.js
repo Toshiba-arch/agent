@@ -9,5 +9,7 @@ contextBridge.exposeInMainWorld('api', {
     onWhatsappMessage: (callback) => ipcRenderer.on('whatsapp-message', callback),
     onWhatsappConnected: (callback) => ipcRenderer.on('whatsapp-connected', callback),
     onWhatsappLoading: (callback) => ipcRenderer.on('whatsapp-loading', callback),
-    generateQr: () => ipcRenderer.send('generate-qr') // Solicita a geração do QR Code
+    onAdminGroupsList: (callback) => ipcRenderer.on('admin-groups-list', callback), // Novo listener
+    generateQr: () => ipcRenderer.send('generate-qr'),
+    getAdminGroups: () => ipcRenderer.send('get-admin-groups') // Nova função
 });

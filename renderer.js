@@ -1,52 +1,73 @@
-const { Client, LocalAuth } = require('whatsapp-web.js');
-const qrcode = require('qrcode');
-
-// Configurações do bot
-let botOnline = true;
-const keywords = {
-    'Olá': ['Oi! Como posso ajudar?', 'Olá! Tudo bem?'],
-    'Ajuda': ['Como posso ajudar?', 'Precisa de ajuda?']
-};
-
-// Cria um novo cliente do WhatsApp
-const client = new Client({
-    authStrategy: new LocalAuth() // Usa autenticação local para evitar reautenticação
-});
-
-// Quando o cliente estiver pronto, exibe uma mensagem
-client.on('ready', () => {
-    document.getElementById('status').innerText = 'Bot Online';
-});
-
-// Quando o cliente precisar de autenticação, gera um QR Code
-client.on('qr', (qr) => {
-    qrcode.toDataURL(qr, (err, url) => {
-        if (err) {
-            console.error('Erro ao gerar QR Code:', err);
-            return;
-        }
-        document.getElementById('status').innerHTML = `<img src="${url}" alt="QR Code" />`;
-    });
-});
-
-// Quando o cliente receber uma mensagem, responde automaticamente
-client.on('message', message => {
-    if (!botOnline) return;
-
-    for (const [keyword, responses] of Object.entries(keywords)) {
-        if (message.body.includes(keyword)) {
-            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-            message.reply(randomResponse);
-            break;
-        }
+// Escuta o status do WhatsApp
+window.api.onWhatsappStatus((event, status) => {
+    document.getElementById('status').innerText = `Status: ${status}`;
+    if (status === 'auth_failure' || status === 'disconnected') {
+        alert(`Erro: ${status}`);
     }
 });
 
-// Função para alternar o bot entre online e offline
-window.toggleBot = () => {
-    botOnline = !botOnline;
-    document.getElementById('status').innerText = botOnline ? 'Bot Online' : 'Bot Offline';
-};
+// Escuta o QR Code
+window.api.onWhatsappQr((event, qr) => {
+    document.getElementById('qrcode').innerHTML = `<img src="${qr}" alt="QR Code" />`;
+});
 
-// Inicializa o cliente
-client.initialize();
+// Escuta o nome do usuário conectado
+window.api.onWhatsappUser((event, user) => {
+    document.getElementById('user').innerText = `Usuário: ${user}`;
+});
+
+// Escuta o número de telefone conectado
+window.api.onWhatsappNumber((event, number) => {
+    document.getElementById('number').innerText = `Número: ${number}`;
+});
+
+// Escuta as mensagens recebidas
+window.api.onWhatsappMessage((event, message) => {
+    const messagesElement = document.getElementById('messages');
+
+    // Cria um elemento para a mensagem
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message');
+
+    // Adiciona detalhes da mensagem
+    let senderInfo = `De: ${message.senderName} (${message.from})`;
+    if (message.isGroup) {
+        senderInfo += ` no grupo "${message.groupName}"`;
+    }
+
+    const timestamp = new Date(message.timestamp * 1000).toLocaleString(); // Converte o timestamp para uma data legível
+
+    messageElement.innerHTML = `
+        <div class="message-header">
+            <strong>${senderInfo}</strong>
+            <span class="timestamp">${timestamp}</span>
+        </div>
+        <div class="message-body">
+            ${message.body ? `<p>${message.body}</p>` : ''}
+            ${message.mediaUrl ? `<img src="${message.mediaUrl}" alt="Mídia" style="max-width: 100%; height: auto;" />` : ''}
+        </div>
+    `;
+
+    messagesElement.appendChild(messageElement);
+});
+
+// Escuta a confirmação de conexão
+window.api.onWhatsappConnected(() => {
+    document.getElementById('qrcode-container').style.display = 'none'; // Oculta o QR Code
+    document.getElementById('messages-container').style.display = 'block'; // Exibe as mensagens
+});
+
+// Escuta o estado de carregamento
+window.api.onWhatsappLoading((event, isLoading) => {
+    const loadingElement = document.getElementById('loading');
+    if (isLoading) {
+        loadingElement.style.display = 'block'; // Exibe o indicador de carregamento
+    } else {
+        loadingElement.style.display = 'none'; // Oculta o indicador de carregamento
+    }
+});
+
+// Função para gerar o QR Code
+window.generateQr = () => {
+    window.api.generateQr(); // Solicita a geração do QR Code
+};

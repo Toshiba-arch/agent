@@ -81,6 +81,10 @@ window.api.onWhatsappLoading((event, isLoading) => {
 window.generateQr = () => {
     window.api.generateQr(); // Solicita a geração do QR Code
 };
+// Função para listar grupos administrados
+window.getAdminGroups = () => {
+    window.api.getAdminGroups();
+};
 function getAdminGroups() {
     window.api.getAdminGroups(); // Usa a função exposta pelo preload.js
 }
@@ -100,6 +104,8 @@ window.api.onAdminGroupsList((event, { success, groups, error }) => {
     }
 });
 // Função para encerrar o bot
-function stopBot() {
+window.stopBot = () => {
     window.api.stopBot();
-}
+};
+
+// Outros listeners e funções...

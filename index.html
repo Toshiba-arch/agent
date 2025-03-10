@@ -68,16 +68,15 @@
 </head>
 <body>
     <h1>WhatsApp Bot</h1>
-        <div id="status">Status: Aguardando...</div>
-        <button id="stop-bot-button" style="display: none;" onclick="stopBot()">Stop Bot</button>
-        <div id="user">Usuário: -</div>
-        <div id="number">Número: -</div>
-        <button onclick="generateQr()">Gerar QR Code</button>
-        <div id="loading">Bot autenticado...</div>
-        <div id="admin-groups-container" style="display: none;">
-            <button onclick="getAdminGroups()">Listar Grupos Administrados</button>
-            <h2>Grupos Administrados</h2>
-            <ul id="admin-groups-list"></ul>
+    <div id="status">Status: Aguardando...</div>
+    <div id="user">User: -</div>
+    <div id="number">Número: -</div>
+    <button onclick="generateQr()">Gerar QR Code</button>
+    <div id="loading">Bot autenticado...</div>
+    <div id="admin-groups-container" style="display: none;">
+           <button onclick="getAdminGroups()">Listar Grupos Administrados</button>
+           <h2>Grupos Administrados</h2>
+           <ul id="admin-groups-list"></ul>
         </div>
     <div id="qrcode-container">
         <div id="qrcode"></div>
@@ -86,6 +85,14 @@
         <h2>Mensagens Recebidas</h2>
         <div id="messages"></div>
     </div>
+    <div id="admin-groups-container" style="display: none;">
+        <button onclick="getAdminGroups()">Listar Grupos Administrados</button>
+        <h2>Grupos Administrados</h2>
+        <ul id="admin-groups-list"></ul>
+    </div>
+    <button id="stop-bot-button" style="display: none;" onclick="stopBot()">Stop Bot</button>
+
+    <!-- Certifique-se de que o script renderer.js é carregado no final do body -->
     <script src="renderer.js"></script>
 </body>
 </html>

@@ -73,11 +73,11 @@
         <div id="number">Número: -</div>
     <button onclick="generateQr()">Gerar QR Code</button>
         <div id="loading">Bot autenticado...</div>
-    <button onclick="getAdminGroups()">Listar Grupos Administrados</button>
-        <div id="admin-groups-container">
-    <h2>Grupos Administrados</h2>
-        <ul id="admin-groups-list"></ul>
-    </div>
+        <div id="admin-groups-container" style="display: none;">
+            <button onclick="getAdminGroups()">Listar Grupos Administrados</button>
+            <h2>Grupos Administrados</h2>
+            <ul id="admin-groups-list"></ul>
+        </div>
     <div id="qrcode-container">
         <div id="qrcode"></div>
     </div>

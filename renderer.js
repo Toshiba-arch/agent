@@ -55,6 +55,7 @@ window.api.onWhatsappMessage((event, message) => {
 window.api.onWhatsappConnected(() => {
     document.getElementById('qrcode-container').style.display = 'none'; // Oculta o QR Code
     document.getElementById('messages-container').style.display = 'block'; // Exibe as mensagens
+    document.getElementById('admin-groups-container').style.display = 'block'; // Exibe o botão e a lista de grupos
 });
 
 // Escuta o estado de carregamento

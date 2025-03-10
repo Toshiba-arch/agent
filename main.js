@@ -6,6 +6,7 @@ const qrcode = require('qrcode');
 let mainWindow;
 let client;
 
+
 function createWindow() {
     // Cria uma nova janela do Electron
     mainWindow = new BrowserWindow({
@@ -93,26 +94,26 @@ function initializeWhatsApp() {
     });
 
     // Evento para receber mensagens
-    client.on('message', async (message) => {
-        const chat = await message.getChat(); // Obtém informações do chat
-        const contact = await message.getContact(); // Obtém informações do contato
+    	client.on('message', async (message) => {
+	    const chat = await message.getChat(); // Obtém informações do chat
+	    const contact = await message.getContact(); // Obtém informações do contato
 
-         let mediaUrl = null;
-        if (message.hasMedia) {
-            const media = await message.downloadMedia();
-            mediaUrl = `data:${media.mimetype};base64,${media.data}`;
-        }
+	    let mediaUrl = null;
+	    if (message.hasMedia) {
+		const media = await message.downloadMedia();
+		mediaUrl = `data:${media.mimetype};base64,${media.data}`;
+	    }
 
-        mainWindow.webContents.send('whatsapp-message', {
-            from: message.from, // Número do remetente
-            senderName: contact.pushname || contact.number, // Nome ou número do remetente
-            body: message.body, // Corpo da mensagem
-            isGroup: chat.isGroup, // Verifica se é um grupo
-            groupName: chat.isGroup ? chat.name : null, // Nome do grupo (se for um grupo)
-            timestamp: message.timestamp, // Timestamp da mensagem
-            mediaUrl: mediaUrl // URL da mídia (se houver)
-        });
-    });
+	    mainWindow.webContents.send('whatsapp-message', {
+		from: message.from, // Número do remetente
+		senderName: contact.pushname || contact.number, // Nome ou número do remetente
+		body: message.body, // Corpo da mensagem
+		isGroup: chat.isGroup, // Verifica se é um grupo
+		groupName: chat.isGroup ? chat.name : null, // Nome do grupo (se for um grupo)
+		timestamp: message.timestamp, // Timestamp da mensagem
+		mediaUrl: mediaUrl // URL da mídia (se houver)
+	    });
+	});
 
     // Inicializa o cliente
     console.log('Inicializando o cliente do WhatsApp...'); // Log para depuração

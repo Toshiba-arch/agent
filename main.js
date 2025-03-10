@@ -142,3 +142,31 @@ ipcMain.on('generate-qr', () => {
     console.log('Solicitando geração do QR Code...'); // Log para depuração
     initializeWhatsApp();
 });
+ipcMain.on('get-admin-groups', async (event) => {
+    try {
+        const chats = await client.getChats(); // Obtém todos os chats
+        const adminGroups = [];
+
+        for (const chat of chats) {
+            if (chat.isGroup) {
+                const group = await chat.fetchGroupMetadata(); // Obtém metadados do grupo
+                const isAdmin = group.participants.find(
+                    (participant) =>
+                        participant.id._serialized === client.info.wid._serialized && participant.isAdmin
+                );
+
+                if (isAdmin) {
+                    adminGroups.push({
+                        id: group.id._serialized,
+                        name: group.subject,
+                        participants: group.participants.length,
+                    });
+                }
+            }
+        }
+
+        event.reply('admin-groups-list', { success: true, groups: adminGroups });
+    } catch (error) {
+        event.reply('admin-groups-list', { success: false, error: error.message });
+    }
+});

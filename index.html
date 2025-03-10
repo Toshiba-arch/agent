@@ -50,15 +50,34 @@
             font-style: italic;
             color: #666;
         }
+        #admin-groups-container {
+        margin-top: 20px;
+        }
+         #admin-groups-list {
+        list-style-type: none;
+        padding: 0;
+        }
+        #admin-groups-list li {
+        padding: 10px;
+        border: 1px solid #ccc;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        }
     </style>
 </head>
 <body>
     <h1>WhatsApp Bot</h1>
-    <div id="status">Status: Aguardando...</div>
-    <div id="user">Usuário: -</div>
-    <div id="number">Número: -</div>
+        <div id="status">Status: Aguardando...</div>
+        <div id="user">Usuário: -</div>
+        <div id="number">Número: -</div>
     <button onclick="generateQr()">Gerar QR Code</button>
-    <div id="loading">Bot autenticado...</div>
+        <div id="loading">Bot autenticado...</div>
+    <button onclick="getAdminGroups()">Listar Grupos Administrados</button>
+        <div id="admin-groups-container">
+    <h2>Grupos Administrados</h2>
+        <ul id="admin-groups-list"></ul>
+    </div>
     <div id="qrcode-container">
         <div id="qrcode"></div>
     </div>

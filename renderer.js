@@ -71,3 +71,21 @@ window.api.onWhatsappLoading((event, isLoading) => {
 window.generateQr = () => {
     window.api.generateQr(); // Solicita a geração do QR Code
 };
+function getAdminGroups() {
+    window.api.send('get-admin-groups');
+}
+
+window.api.on('admin-groups-list', (event, { success, groups, error }) => {
+    const adminGroupsList = document.getElementById('admin-groups-list');
+    adminGroupsList.innerHTML = ''; // Limpa a lista anterior
+
+    if (success) {
+        groups.forEach((group) => {
+            const groupItem = document.createElement('li');
+            groupItem.innerText = `${group.name} (${group.participants} participantes)`;
+            adminGroupsList.appendChild(groupItem);
+        });
+    } else {
+        alert(`Erro ao listar grupos: ${error}`);
+    }
+});

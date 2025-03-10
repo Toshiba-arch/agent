@@ -170,3 +170,16 @@ ipcMain.on('get-admin-groups', async (event) => {
         event.reply('admin-groups-list', { success: false, error: error.message });
     }
 });
+ipcMain.on('stop-bot', async () => {
+    try {
+        if (client) {
+            await client.logout();
+            await client.destroy();
+            client = null;
+            mainWindow.webContents.send('whatsapp-disconnected');
+            console.log('Sessão do WhatsApp encerrada com sucesso.');
+        }
+    } catch (error) {
+        console.error('Erro ao encerrar a sessão:', error);
+    }
+});

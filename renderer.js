@@ -56,6 +56,15 @@ window.api.onWhatsappConnected(() => {
     document.getElementById('qrcode-container').style.display = 'none'; // Oculta o QR Code
     document.getElementById('messages-container').style.display = 'block'; // Exibe as mensagens
     document.getElementById('admin-groups-container').style.display = 'block'; // Exibe o botão e a lista de grupos
+    document.getElementById('stop-bot-button').style.display = 'block';
+});
+
+// Oculta o botão "Stop Bot" quando a sessão é encerrada
+window.api.onWhatsappDisconnected(() => {
+    document.getElementById('stop-bot-button').style.display = 'none';
+    document.getElementById('qrcode-container').style.display = 'block';
+    document.getElementById('messages-container').style.display = 'none';
+    document.getElementById('admin-groups-container').style.display = 'none';
 });
 
 // Escuta o estado de carregamento
@@ -90,3 +99,7 @@ window.api.onAdminGroupsList((event, { success, groups, error }) => {
         alert(`Erro ao listar grupos: ${error}`);
     }
 });
+// Função para encerrar o bot
+function stopBot() {
+    window.api.stopBot();
+}

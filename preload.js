@@ -11,5 +11,6 @@ contextBridge.exposeInMainWorld('api', {
     onWhatsappLoading: (callback) => ipcRenderer.on('whatsapp-loading', callback),
     onAdminGroupsList: (callback) => ipcRenderer.on('admin-groups-list', callback), // Novo listener
     generateQr: () => ipcRenderer.send('generate-qr'),
-    getAdminGroups: () => ipcRenderer.send('get-admin-groups') // Nova função
+    getAdminGroups: () => ipcRenderer.send('get-admin-groups'), // Nova função
+    stopBot: () => ipcRenderer.send('stop-bot')
 });

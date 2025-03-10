@@ -85,9 +85,6 @@ window.generateQr = () => {
 window.getAdminGroups = () => {
     window.api.getAdminGroups();
 };
-function getAdminGroups() {
-    window.api.getAdminGroups(); // Usa a função exposta pelo preload.js
-}
 
 window.api.onAdminGroupsList((event, { success, groups, error }) => {
     const adminGroupsList = document.getElementById('admin-groups-list');

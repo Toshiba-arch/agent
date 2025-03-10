@@ -183,6 +183,3 @@ ipcMain.on('stop-bot', async () => {
         console.error('Erro ao encerrar a sessão:', error);
     }
 });
-ipcMain.on('generate-qr', () => {
-    initializeWhatsApp(); // Gera o QR Code
-});

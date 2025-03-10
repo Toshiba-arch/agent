@@ -83,9 +83,12 @@ window.generateQr = () => {
 };
 // Função para listar grupos administrados
 window.getAdminGroups = () => {
+    const adminGroupsList = document.getElementById('admin-groups-list');
+    adminGroupsList.innerHTML = '<li>Carregando grupos...</li>'; // Feedback visual
     window.api.getAdminGroups();
 };
 
+// Listener para receber a lista de grupos administrados
 window.api.onAdminGroupsList((event, { success, groups, error }) => {
     const adminGroupsList = document.getElementById('admin-groups-list');
     adminGroupsList.innerHTML = ''; // Limpa a lista anterior

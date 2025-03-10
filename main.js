@@ -165,8 +165,10 @@ ipcMain.on('get-admin-groups', async (event) => {
             }
         }
 
+        // Envia a lista de grupos administrados de volta para o renderer.js
         event.reply('admin-groups-list', { success: true, groups: adminGroups });
     } catch (error) {
+        // Envia uma mensagem de erro se algo der errado
         event.reply('admin-groups-list', { success: false, error: error.message });
     }
 });

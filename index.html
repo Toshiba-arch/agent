@@ -4,12 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WhatsApp Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        #status, #user, #number {
+            margin-bottom: 10px;
+        }
+        #qrcode img {
+            margin-top: 10px;
+        }
+        #messages-container {
+            display: none; /* Oculta as mensagens inicialmente */
+            margin-top: 20px;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .message-body {
+            font-size: 1.1em;
+            color: #333;
+        }
+        .timestamp {
+            font-size: 0.8em;
+            color: #777;
+        }
+        #loading {
+            display: none; /* Oculta o indicador de carregamento inicialmente */
+            margin-top: 10px;
+            font-style: italic;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
     <h1>WhatsApp Bot</h1>
-    <div id="status">Carregando...</div>
-    <div id="qrcode"></div>
-    <button onclick="toggleBot()">Alternar Bot</button>
+    <div id="status">Status: Aguardando...</div>
+    <div id="user">Usuário: -</div>
+    <div id="number">Número: -</div>
+    <button onclick="generateQr()">Gerar QR Code</button>
+    <div id="loading">Bot autenticado...</div>
+    <div id="qrcode-container">
+        <div id="qrcode"></div>
+    </div>
+    <div id="messages-container">
+        <h2>Mensagens Recebidas</h2>
+        <div id="messages"></div>
+    </div>
     <script src="renderer.js"></script>
 </body>
 </html>

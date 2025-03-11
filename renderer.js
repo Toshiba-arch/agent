@@ -82,30 +82,61 @@ window.generateQr = () => {
     window.api.generateQr(); // Solicita a geração do QR Code
 };
 // Função para listar grupos administrados
-window.getAdminGroups = () => {
-    const adminGroupsList = document.getElementById('admin-groups-list');
-    adminGroupsList.innerHTML = '<li>Carregando grupos...</li>'; // Feedback visual
-    window.api.getAdminGroups();
-};
+//window.getAdminGroups = () => {
+//    const adminGroupsList = document.getElementById('admin-groups-list');
+//    adminGroupsList.innerHTML = '<li>Carregando grupos...</li>'; // Feedback visual
+//    window.api.getAdminGroups();
+//};
 
 // Listener para receber a lista de grupos administrados
-window.api.onAdminGroupsList((event, { success, groups, error }) => {
-    const adminGroupsList = document.getElementById('admin-groups-list');
-    adminGroupsList.innerHTML = ''; // Limpa a lista anterior
+//window.api.onAdminGroupsList((event, { success, groups, error }) => {
+//    const adminGroupsList = document.getElementById('admin-groups-list');
+//    adminGroupsList.innerHTML = ''; // Limpa a lista anterior
+
+//    if (success) {
+//        console.log('Grupos recebidos:', groups); // Log para depuração
+//        groups.forEach((group) => {
+//            const groupItem = document.createElement('li');
+//            groupItem.innerText = `${group.name} (${group.participants} participantes)`;
+//            adminGroupsList.appendChild(groupItem);
+//        });
+//    } else {
+//        console.error('Erro ao listar grupos:', error); // Log para depuração
+//        alert(`Erro ao listar grupos: ${error}`);
+//    }
+//});
+// Função para listar todos os grupos
+window.getAllGroups = () => {
+    const allGroupsList = document.getElementById('all-groups-list');
+    allGroupsList.innerHTML = '<li>Carregando grupos...</li>'; // Feedback visual
+    window.api.getAllGroups();
+};
+
+// Listener para receber a lista de todos os grupos
+window.api.onAllGroupsList((event, { success, groups, error }) => {
+    const allGroupsList = document.getElementById('all-groups-list');
+    allGroupsList.innerHTML = ''; // Limpa a lista anterior
 
     if (success) {
+        console.log('Todos os grupos recebidos:', groups); // Log para depuração
         groups.forEach((group) => {
             const groupItem = document.createElement('li');
-            groupItem.innerText = `${group.name} (${group.participants} participantes)`;
-            adminGroupsList.appendChild(groupItem);
+            groupItem.innerText = `${group.name} (${group.participants} participantes) - ${
+                group.isAdmin ? 'Administrador' : 'Membro'
+            }`;
+            allGroupsList.appendChild(groupItem);
         });
     } else {
+        console.error('Erro ao listar grupos:', error); // Log para depuração
         alert(`Erro ao listar grupos: ${error}`);
     }
 });
 // Função para encerrar o bot
 window.stopBot = () => {
     window.api.stopBot();
+};
+window.getContacts = () => {
+    window.api.getContacts();
 };
 
 // Outros listeners e funções...

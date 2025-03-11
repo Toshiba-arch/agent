@@ -36,7 +36,7 @@ function createWindow() {
 // Função para inicializar o cliente do WhatsApp
 function initializeWhatsApp() {
     client = new Client({
-        authStrategy: new LocalAuth(), // Usa autenticação local para evitar reautenticação
+        authStrategy: new LocalAuth({ dataPath: './session-data' }), // Salva a sessão em um diretório específico
         puppeteer: {
             headless: true, // Executa o navegador em modo headless
             args: [
@@ -142,36 +142,48 @@ ipcMain.on('generate-qr', () => {
     console.log('Solicitando geração do QR Code...'); // Log para depuração
     initializeWhatsApp();
 });
-ipcMain.on('get-admin-groups', async (event) => {
+ipcMain.on('get-all-groups', async (event) => {
     try {
         const chats = await client.getChats(); // Obtém todos os chats
-        const adminGroups = [];
+        const allGroups = [];
 
         for (const chat of chats) {
             if (chat.isGroup) {
                 const group = await chat.fetchGroupMetadata(); // Obtém metadados do grupo
-                const isAdmin = group.participants.find(
-                    (participant) =>
-                        participant.id._serialized === client.info.wid._serialized && participant.isAdmin
-                );
-
-                if (isAdmin) {
-                    adminGroups.push({
-                        id: group.id._serialized,
-                        name: group.subject,
-                        participants: group.participants.length,
-                    });
-                }
+                allGroups.push({
+                    id: group.id._serialized,
+                    name: group.subject,
+                    participants: group.participants.length,
+                    isAdmin: group.participants.some(
+                        (participant) =>
+                            participant.id._serialized === client.info.wid._serialized && participant.isAdmin
+                    ), // Verifica se você é administrador
+                });
             }
         }
 
-        // Envia a lista de grupos administrados de volta para o renderer.js
-        event.reply('admin-groups-list', { success: true, groups: adminGroups });
+        console.log('Todos os grupos encontrados:', allGroups); // Log para depuração
+        event.reply('all-groups-list', { success: true, groups: allGroups });
     } catch (error) {
-        // Envia uma mensagem de erro se algo der errado
-        event.reply('admin-groups-list', { success: false, error: error.message });
+        console.error('Erro ao buscar grupos:', error); // Log para depuração
+        event.reply('all-groups-list', { success: false, error: error.message });
     }
 });
+
+ipcMain.on('get-contacts', async (event) => {
+    try {
+        const contacts = await client.getContacts();
+        const contactList = contacts.map(contact => ({
+            name: contact.pushname || contact.number,
+            number: contact.number
+        }));
+        mainWindow.webContents.send('contacts-list', { success: true, contacts: contactList });
+    } catch (error) {
+        console.error('Erro ao buscar contatos:', error);
+        mainWindow.webContents.send('contacts-list', { success: false, error: error.message });
+    }
+});
+
 ipcMain.on('stop-bot', async () => {
     try {
         if (client) {

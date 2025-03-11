@@ -9,9 +9,12 @@ contextBridge.exposeInMainWorld('api', {
     onWhatsappMessage: (callback) => ipcRenderer.on('whatsapp-message', callback),
     onWhatsappConnected: (callback) => ipcRenderer.on('whatsapp-connected', callback),
     onWhatsappLoading: (callback) => ipcRenderer.on('whatsapp-loading', callback),
-    onAdminGroupsList: (callback) => ipcRenderer.on('admin-groups-list', callback), // Novo listener
+    //onAdminGroupsList: (callback) => ipcRenderer.on('admin-groups-list', callback), // Novo listener
     onWhatsappDisconnected: (callback) => ipcRenderer.on('whatsapp-disconnected', callback),
     generateQr: () => ipcRenderer.send('generate-qr'),
-    getAdminGroups: () => ipcRenderer.send('get-admin-groups'), // Nova função
-    stopBot: () => ipcRenderer.send('stop-bot')
+    //getAdminGroups: () => ipcRenderer.send('get-admin-groups'), // Nova função
+    getAllGroups: () => ipcRenderer.send('get-all-groups'),
+    stopBot: () => ipcRenderer.send('stop-bot'),
+    getContacts: () => ipcRenderer.send('get-contacts'),
+    onContactsList: (callback) => ipcRenderer.on('contacts-list', callback)
 });

@@ -133,9 +133,11 @@ window.api.onAllGroupsList((event, { success, groups, error }) => {
 });
 // Função para encerrar o bot
 window.stopBot = () => {
+    console.log('Função stopbot chamada!');
     window.api.stopBot();
 };
 window.getContacts = () => {
+    console.log('Função getContacts chamada!');	
     window.api.getContacts();
 };
 
